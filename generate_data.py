@@ -46,5 +46,7 @@ column_renames = {
 
 flight_df2.rename(columns=column_renames, inplace=True)
 
-flight_df2.to_csv('output/processed_flight_data.csv', index=False)
+flight_df2['planned_date'] = flight_df2['planned_date'].dt.strftime('%Y-%m-%d %H:%M:%S')
+flight_df2['actual_date'] = flight_df2['actual_date'].dt.strftime('%Y-%m-%d %H:%M:%S')
 
+flight_df2.to_csv('output/processed_flight_data.csv', index=False)
