@@ -1,0 +1,35 @@
+name: Update Flight Data
+
+on:
+  schedule:
+    - cron: '*/30 * * * *' 
+  workflow_dispatch:         
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run ETL script
+      run: |
+        python generate_data.py
+
+    - name: Commit output
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add output/
+        git commit -m "Update flight data"
+        git push
